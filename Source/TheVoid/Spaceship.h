@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "SpaceshipMovementActorComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Spaceship.generated.h"
@@ -27,5 +28,5 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	// TODO Aquí irá el componente creado
+	USpaceshipMovementActorComponent* MovementComponent;
 };

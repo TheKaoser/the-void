@@ -8,7 +8,8 @@ ASpaceship::ASpaceship()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	MovementComponent = CreateDefaultSubobject<USpaceshipMovementActorComponent>(TEXT("Spaceship Movement Component"));
+	// SetRootComponent(MovementComponent);
 }
 
 // Called when the game starts or when spawned
@@ -32,4 +33,3 @@ void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-
