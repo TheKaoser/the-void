@@ -15,8 +15,7 @@ ASpaceship::ASpaceship()
 void ASpaceship::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	UE_LOG(LogTemp, Warning, TEXT("Hello World"));
+
 }
 
 // Called every frame
@@ -24,6 +23,7 @@ void ASpaceship::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	AddActorLocalOffset(FVector(0, 1000 * DeltaTime, 0), true);
 }
 
 // Called to bind functionality to input
