@@ -29,4 +29,6 @@ public:
 
 private:
 	USpaceshipMovementActorComponent* MovementComponent;
+
+	UInputComponent* SpaceshipInputComponent;
 };
