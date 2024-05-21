@@ -28,7 +28,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
+	UPROPERTY()
 	USpaceshipMovementActorComponent* MovementComponent;
-
-	UInputComponent* SpaceshipInputComponent;
 };

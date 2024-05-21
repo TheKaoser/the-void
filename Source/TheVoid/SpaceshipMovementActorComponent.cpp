@@ -28,11 +28,17 @@ void USpaceshipMovementActorComponent::TickComponent(float DeltaTime, ELevelTick
 
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	GetOwner()->AddActorLocalOffset(FVector(0, PlayerInputComponent->GetAxisValue("SpaceshipMoveForward") * 1000 * DeltaTime, 0), true);
+	//GetOwner()->AddActorLocalOffset(FVector(0, PlayerInputComponent->GetAxisValue("SpaceshipMoveForward") * 1000 * DeltaTime, 0), true);
 }
 
 
 void USpaceshipMovementActorComponent::SetPlayerInputComponent(UInputComponent* SpaceshipInputComponent)
 {
 	this->PlayerInputComponent = SpaceshipInputComponent;
+}
+
+
+void USpaceshipMovementActorComponent::MoveForward(float InputValue)
+{
+	UE_LOG(LogTemp, Warning, TEXT("InputValue: %f"), InputValue);
 }

@@ -26,6 +26,10 @@ public:
 
 	void SetPlayerInputComponent(UInputComponent* SpaceshipInputComponent);
 
+	UFUNCTION()
+	void MoveForward(float InputValue);
+
 private:
+	UPROPERTY()
 	UInputComponent* PlayerInputComponent;
 };

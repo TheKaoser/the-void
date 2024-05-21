@@ -8,7 +8,7 @@ ASpaceship::ASpaceship()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	MovementComponent = CreateDefaultSubobject<USpaceshipMovementActorComponent>(TEXT("Spaceship Movement Component"));
+	//MovementComponent = CreateDefaultSubobject<USpaceshipMovementActorComponent>(TEXT("Spaceship Movement Component"));
 }
 
 // Called when the game starts or when spawned
@@ -16,11 +16,9 @@ void ASpaceship::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// UInputComponent* SpaceshipInputComponent = new UInputComponent();
+	// SetupPlayerInputComponent(InputComponent);
 
-	SetupPlayerInputComponent(SpaceshipInputComponent);
-
-	MovementComponent->SetPlayerInputComponent(SpaceshipInputComponent);
+	// MovementComponent->SetPlayerInputComponent(InputComponent);
 }
 
 // Called every frame
@@ -36,8 +34,8 @@ void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 	UE_LOG(LogTemp, Warning, TEXT("SetupPlayerInputComponent()"));
 	
-	PlayerInputComponent->BindAxis("SpaceshipMoveForward");
-	PlayerInputComponent->BindAxis("SpaceshipMoveBackwards");
-	PlayerInputComponent->BindAxis("SpaceshipMoveLeft");
-	PlayerInputComponent->BindAxis("SpaceshipMoveRight");
+	PlayerInputComponent->BindAxis("SpaceshipMoveForward", MovementComponent, &USpaceshipMovementActorComponent::MoveForward);
+    // PlayerInputComponent->BindAxis("SpaceshipMoveBackwards", this, &ASpaceship::MoveBackwards);
+    // PlayerInputComponent->BindAxis("SpaceshipMoveLeft", this, &ASpaceship::MoveLeft);
+    // PlayerInputComponent->BindAxis("SpaceshipMoveRight", this, &ASpaceship::MoveRight);
 }
