@@ -30,4 +30,7 @@ public:
 private:
 	UPROPERTY()
 	USpaceshipMovementActorComponent* MovementComponent;
+	
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* SpaceshipMesh;
 };

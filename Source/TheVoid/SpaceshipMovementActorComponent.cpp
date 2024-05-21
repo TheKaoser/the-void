@@ -28,7 +28,6 @@ void USpaceshipMovementActorComponent::TickComponent(float DeltaTime, ELevelTick
 
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	//GetOwner()->AddActorLocalOffset(FVector(0, PlayerInputComponent->GetAxisValue("SpaceshipMoveForward") * 1000 * DeltaTime, 0), true);
 }
 
 
@@ -38,7 +37,12 @@ void USpaceshipMovementActorComponent::SetPlayerInputComponent(UInputComponent* 
 }
 
 
-void USpaceshipMovementActorComponent::MoveForward(float InputValue)
+void USpaceshipMovementActorComponent::MoveY(float InputValue)
 {
-	UE_LOG(LogTemp, Warning, TEXT("InputValue: %f"), InputValue);
+	GetOwner()->AddActorLocalOffset(FVector(0, InputValue * 1000 * GetWorld()->DeltaTimeSeconds, 0), true);
+}
+
+void USpaceshipMovementActorComponent::MoveX(float InputValue)
+{
+	GetOwner()->AddActorLocalOffset(FVector(InputValue * 1000 * GetWorld()->DeltaTimeSeconds, 0, 0), true);
 }
