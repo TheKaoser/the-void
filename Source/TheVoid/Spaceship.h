@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "SpaceshipMovementActorComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Spaceship.generated.h"
@@ -29,8 +28,14 @@ public:
 
 private:
 	UPROPERTY()
-	USpaceshipMovementActorComponent* MovementComponent;
+	class USpaceshipMovementActorComponent* MovementComponent;
 	
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* SpaceshipMesh;
+
+	UPROPERTY(EditAnywhere)
+	class UCameraComponent* Camera;
+	
+	UPROPERTY(EditAnywhere)
+	class USpringArmComponent* SpringArm;
 };

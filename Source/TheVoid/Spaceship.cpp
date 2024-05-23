@@ -3,23 +3,26 @@
 
 #include "Spaceship.h"
 #include "Camera/CameraComponent.h"
+#include "SpaceshipMovementActorComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 ASpaceship::ASpaceship()
 {
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	MovementComponent = CreateDefaultSubobject<USpaceshipMovementActorComponent>(TEXT("MovementComponent"));
 
-	// UCameraComponent* OurCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("OurCamera"));
-	// OurCamera->SetupAttachment(RootComponent);
-	// OurCamera->SetRelativeLocation(FVector(-10000.0f, 0.0f, 100000.0f));
-	// OurCamera->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
-
 	SpaceshipMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SpaceshipMesh"));
-    SpaceshipMesh->SetupAttachment(RootComponent);
+	SpaceshipMesh->SetupAttachment(RootComponent);
+	
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm->SetupAttachment(RootComponent);
 
-	AutoPossessPlayer = EAutoReceiveInput::Player0;
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 }
 
 // Called when the game starts or when spawned
