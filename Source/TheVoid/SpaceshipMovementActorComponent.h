@@ -27,6 +27,9 @@ public:
 	void SetPlayerInputComponent(UInputComponent* SpaceshipInputComponent);
 
 	UFUNCTION()
+	void MoveForward();
+
+	UFUNCTION()
 	void MoveX(float InputValue);
 	
 	UFUNCTION()
@@ -35,4 +38,7 @@ public:
 private:
 	UPROPERTY()
 	UInputComponent* PlayerInputComponent;
+
+	UPROPERTY()
+	float SpaceshipSpeed;
 };
