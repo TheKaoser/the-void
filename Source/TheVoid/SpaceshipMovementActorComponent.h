@@ -28,6 +28,9 @@ public:
 
 	UFUNCTION()
 	void MoveForward();
+	
+	UFUNCTION()
+	void StopMoveForward();
 
 	UFUNCTION()
 	void MoveX(float InputValue);
@@ -39,8 +42,14 @@ private:
 	UPROPERTY()
 	UInputComponent* PlayerInputComponent;
 
-	bool IsMoving = false;
+	bool IsAccelerating = false;
 
-	UPROPERTY()
-	float SpaceshipSpeed;
+	static const float Acceleration;
+	static const float Deceleration;
+	static const float MaxSpeed;
+	static const float RotationSpeed;
+	static const float ClimbSpeed;
+
+	UPROPERTY(VisibleAnywhere, Category = "Spaceship Movement")
+	float CurrentSpaceshipSpeed = 0.0f;
 };

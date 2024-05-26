@@ -27,7 +27,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	class USpaceshipMovementActorComponent* MovementComponent;
 	
 	UPROPERTY(EditAnywhere)
