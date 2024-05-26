@@ -39,10 +39,13 @@ void USpaceshipMovementActorComponent::SetPlayerInputComponent(UInputComponent* 
 
 void USpaceshipMovementActorComponent::MoveY(float InputValue)
 {
-	GetOwner()->AddActorLocalOffset(FVector(0, InputValue * 1000 * GetWorld()->DeltaTimeSeconds, 0), true);
+	GetOwner()->AddActorLocalOffset(FVector(0, 0, InputValue * 100 * GetWorld()->DeltaTimeSeconds), true);
+	GetOwner()->AddActorLocalRotation(FRotator(0, 0, InputValue * 10 * GetWorld()->DeltaTimeSeconds), true);
 }
 
 void USpaceshipMovementActorComponent::MoveX(float InputValue)
 {
-	GetOwner()->AddActorLocalOffset(FVector(InputValue * 1000 * GetWorld()->DeltaTimeSeconds, 0, 0), true);
+	GetOwner()->AddActorLocalRotation(FRotator(InputValue * 10 * GetWorld()->DeltaTimeSeconds, 0, 0), true);
+	if (IsMoving)
+		GetOwner()->AddActorLocalRotation(FRotator(0, InputValue * 10 * GetWorld()->DeltaTimeSeconds, 0), true);
 }

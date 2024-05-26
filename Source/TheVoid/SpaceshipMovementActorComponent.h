@@ -35,4 +35,8 @@ public:
 private:
 	UPROPERTY()
 	UInputComponent* PlayerInputComponent;
+
+	bool IsMoving = false;
+
+	
 };
