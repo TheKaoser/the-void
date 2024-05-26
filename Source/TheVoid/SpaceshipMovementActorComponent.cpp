@@ -17,17 +17,20 @@ void USpaceshipMovementActorComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Warning, TEXT("BeginPlay()"));
+	SpaceshipSpeed = 0;
+
+	UE_LOG(LogTemp, Warning, TEXT("SpaceshipSpeed: %f"), SpaceshipSpeed);
 }
 
 
 // Called every frame
 void USpaceshipMovementActorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("%d"), 1);
-
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	SpaceshipSpeed = std::clamp(SpaceshipSpeed - 30 * DeltaTime, static_cast<float>(0), static_cast<float>(10000));
+
+	GetOwner()->AddActorLocalOffset(FVector(0, SpaceshipSpeed, 0), true);
 }
 
 
@@ -37,11 +40,18 @@ void USpaceshipMovementActorComponent::SetPlayerInputComponent(UInputComponent* 
 }
 
 
+void USpaceshipMovementActorComponent::MoveForward()
+{
+	SpaceshipSpeed += 1000 * GetWorld()->DeltaTimeSeconds;
+}
+
+
 void USpaceshipMovementActorComponent::MoveY(float InputValue)
 {
 	GetOwner()->AddActorLocalOffset(FVector(0, 0, InputValue * 100 * GetWorld()->DeltaTimeSeconds), true);
 	GetOwner()->AddActorLocalRotation(FRotator(0, 0, InputValue * 10 * GetWorld()->DeltaTimeSeconds), true);
 }
+
 
 void USpaceshipMovementActorComponent::MoveX(float InputValue)
 {
