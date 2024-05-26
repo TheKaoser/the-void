@@ -29,7 +29,7 @@ void USpaceshipMovementActorComponent::TickComponent(float DeltaTime, ELevelTick
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	SpaceshipSpeed = std::clamp(SpaceshipSpeed - 30 * DeltaTime, static_cast<float>(0), static_cast<float>(10000));
-
+	IsMoving = SpaceshipSpeed > 0 ? true : false;
 	GetOwner()->AddActorLocalOffset(FVector(0, SpaceshipSpeed, 0), true);
 }
 
