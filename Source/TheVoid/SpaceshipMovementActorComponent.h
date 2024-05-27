@@ -25,6 +25,8 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void SetPlayerInputComponent(UInputComponent* SpaceshipInputComponent);
+	
+	void SetSpringArm(class USpringArmComponent* SpringArm);
 
 	UFUNCTION()
 	void MoveForward();
@@ -52,4 +54,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Spaceship Movement")
 	float CurrentSpaceshipSpeed = 0.0f;
+
+	static const float BaseSpringArmLength;
+
+	UPROPERTY()
+	USpringArmComponent* SpringArmComponent;
 };

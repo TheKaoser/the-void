@@ -33,6 +33,7 @@ void ASpaceship::BeginPlay()
 	SetupPlayerInputComponent(InputComponent);
 
 	MovementComponent->SetPlayerInputComponent(InputComponent);
+	MovementComponent->SetSpringArm(SpringArm);
 }
 
 // Called every frame
