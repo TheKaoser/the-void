@@ -17,13 +17,13 @@ USpaceshipMovementActorComponent::USpaceshipMovementActorComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-
 // Called when the game starts
 void USpaceshipMovementActorComponent::BeginPlay()
 {
 	Super::BeginPlay();
-}
 
+	SpaceshipController = Cast<APlayerController>(Cast<APawn>(GetOwner())->GetController());
+}
 
 // Called every frame
 void USpaceshipMovementActorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -32,15 +32,16 @@ void USpaceshipMovementActorComponent::TickComponent(float DeltaTime, ELevelTick
 
 	CurrentSpaceshipSpeed = std::clamp(CurrentSpaceshipSpeed + (IsAccelerating * Acceleration - Deceleration) * DeltaTime, 0.0f, MaxSpeed);
 	GetOwner()->AddActorLocalOffset(FVector(0, CurrentSpaceshipSpeed, 0), true);
+
+	SetForceFeedbackEffect();
+
 	UE_LOG(LogTemp, Warning, TEXT("Current Speed: %f"), CurrentSpaceshipSpeed);
 }
-
 
 void USpaceshipMovementActorComponent::SetPlayerInputComponent(UInputComponent* SpaceshipInputComponent)
 {
 	this->PlayerInputComponent = SpaceshipInputComponent;
 }
-
 
 void USpaceshipMovementActorComponent::MoveForward()
 {
@@ -52,6 +53,15 @@ void USpaceshipMovementActorComponent::StopMoveForward()
 	IsAccelerating = false;
 }
 
+void USpaceshipMovementActorComponent::SetForceFeedbackEffect()
+{
+	FForceFeedbackParameters Params = FForceFeedbackParameters();
+
+	if (CurrentSpaceshipSpeed > 500)
+	{
+		SpaceshipController->ClientPlayForceFeedback(ForceFeedbackEffect, Params);
+	}
+}
 
 void USpaceshipMovementActorComponent::MoveY(float InputValue)
 {
@@ -59,7 +69,6 @@ void USpaceshipMovementActorComponent::MoveY(float InputValue)
 		GetOwner()->AddActorLocalOffset(FVector(0, 0, InputValue * ClimbSpeed * GetWorld()->DeltaTimeSeconds), true);
 	GetOwner()->AddActorLocalRotation(FRotator(0, 0, InputValue * RotationSpeed * GetWorld()->DeltaTimeSeconds), true);
 }
-
 
 void USpaceshipMovementActorComponent::MoveX(float InputValue)
 {
