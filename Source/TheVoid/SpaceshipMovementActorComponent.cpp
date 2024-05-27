@@ -24,6 +24,8 @@ USpaceshipMovementActorComponent::USpaceshipMovementActorComponent()
 void USpaceshipMovementActorComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SpaceshipController = Cast<APlayerController>(Cast<APawn>(GetOwner())->GetController());
 }
 
 // Called every frame
@@ -35,6 +37,7 @@ void USpaceshipMovementActorComponent::TickComponent(float DeltaTime, ELevelTick
 	SpringArmComponent->TargetArmLength = BaseSpringArmLength + CurrentSpaceshipSpeed;
 	SpringArmComponent->bEnableCameraRotationLag = true;
 	GetOwner()->AddActorLocalOffset(FVector(0, CurrentSpaceshipSpeed, 0), true);
+	SetForceFeedbackEffect();
 }
 
 void USpaceshipMovementActorComponent::SetPlayerInputComponent(UInputComponent* SpaceshipInputComponent)
@@ -55,6 +58,16 @@ void USpaceshipMovementActorComponent::MoveForward()
 void USpaceshipMovementActorComponent::StopMoveForward()
 {
 	IsAccelerating = false;
+}
+
+void USpaceshipMovementActorComponent::SetForceFeedbackEffect()
+{
+	FForceFeedbackParameters Params = FForceFeedbackParameters();
+
+	if (CurrentSpaceshipSpeed > 500)
+	{
+		SpaceshipController->ClientPlayForceFeedback(ForceFeedbackEffect, Params);
+	}
 }
 
 void USpaceshipMovementActorComponent::MoveY(float InputValue)

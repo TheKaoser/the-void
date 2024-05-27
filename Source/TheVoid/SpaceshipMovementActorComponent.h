@@ -35,6 +35,9 @@ public:
 	void StopMoveForward();
 
 	UFUNCTION()
+	void SetForceFeedbackEffect();
+
+	UFUNCTION()
 	void MoveX(float InputValue);
 	
 	UFUNCTION()
@@ -51,6 +54,11 @@ private:
 	static const float MaxSpeed;
 	static const float RotationSpeed;
 	static const float ClimbSpeed;
+
+	APlayerController* SpaceshipController;
+
+	UPROPERTY(EditAnywhere)
+	UForceFeedbackEffect* ForceFeedbackEffect;
 
 	UPROPERTY(VisibleAnywhere, Category = "Spaceship Movement")
 	float CurrentSpaceshipSpeed = 0.0f;
