@@ -32,10 +32,7 @@ void ASpaceship::BeginPlay()
 	Super::BeginPlay();
 
 	SetupPlayerInputComponent(InputComponent);
-
-	MovementComponent->SetPlayerInputComponent(InputComponent);
-	MovementComponent->SetSpringArm(SpringArm);
-
+	Observers[0] = MovementComponent;
 	CurrentState = new SpaceshipIdleState();
 }
 
@@ -77,6 +74,10 @@ void ASpaceship::HandleInput(SpaceshipInput Input)
 		delete CurrentState;
 		CurrentState = SpaceshipState;
 		CurrentState->Enter(this);
-		UE_LOG(LogTemp, Warning, TEXT("State changed"));
+		
+		for (int i = 0; i < NumObservers; i++)
+		{
+			Observers[i]->OnStateChange(CurrentState);
+		}
 	}
 }

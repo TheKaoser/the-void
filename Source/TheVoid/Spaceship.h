@@ -32,8 +32,6 @@ public:
 private:
 	void MoveForward();
 	void StopMoveForward();
-	void MoveX(float InputValue);
-	void MoveY(float InputValue);
 	void HandleInput(SpaceshipInput Input);
 	
 	UPROPERTY(EditAnywhere)
@@ -45,4 +43,7 @@ private:
 	class USpringArmComponent* SpringArm;
 
 	class SpaceshipState* CurrentState;
+
+	static const int NumObservers = 1;
+	class StateObserver* Observers[NumObservers];
 };

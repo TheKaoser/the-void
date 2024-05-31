@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "StateObserver.h"
 #include "SpaceshipMovementActorComponent.generated.h"
 
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class THEVOID_API USpaceshipMovementActorComponent : public UActorComponent
+class THEVOID_API USpaceshipMovementActorComponent : public UActorComponent, public StateObserver
 {
 	GENERATED_BODY()
 
@@ -24,10 +24,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void SetPlayerInputComponent(UInputComponent* SpaceshipInputComponent);
-	
-	void SetSpringArm(class USpringArmComponent* SpringArm);
-
 	UFUNCTION()
 	void SetForceFeedbackEffect();
 
@@ -40,10 +36,9 @@ public:
 	UFUNCTION()
 	void MoveY(float InputValue);
 
-private:
-	UPROPERTY()
-	UInputComponent* PlayerInputComponent;
+	void OnStateChange(SpaceshipState* NewState) override;
 
+private:
 	bool IsAccelerating = false;
 
 	static const float Acceleration;
@@ -63,5 +58,5 @@ private:
 	static const float BaseSpringArmLength;
 
 	UPROPERTY()
-	USpringArmComponent* SpringArmComponent;
+	class USpringArmComponent* SpringArmComponent;
 };

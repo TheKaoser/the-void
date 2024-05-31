@@ -10,4 +10,6 @@ class SpaceshipMovingState : public SpaceshipState
     virtual void Enter(class ASpaceship* Spaceship) override;
     virtual void Update(class ASpaceship* Spaceship) override;
     virtual void Exit(class ASpaceship* Spaceship) override;
+
+    virtual StateName GetStateName() override;
 };

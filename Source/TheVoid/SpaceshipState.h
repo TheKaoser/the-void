@@ -6,6 +6,12 @@
 class SpaceshipState
 {
 public:
+    enum StateName
+    {
+        Idle,
+        Moving
+    };
+
     // Destructor
     virtual ~SpaceshipState() {};
 
@@ -14,6 +20,8 @@ public:
     virtual void Enter(class ASpaceship* Spaceship) = 0;
     virtual void Update(class ASpaceship* Spaceship) = 0;
     virtual void Exit(class ASpaceship* Spaceship) = 0;
+
+    virtual StateName GetStateName() = 0;
 };
 
 #endif

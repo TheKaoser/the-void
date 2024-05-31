@@ -21,7 +21,6 @@ SpaceshipState* SpaceshipMovingState::HandleInput(ASpaceship* Spaceship, Spacesh
 
 void SpaceshipMovingState::Enter(ASpaceship* Spaceship)
 {
-    Spaceship->MovementComponent->Accelerate();
 }
 
 void SpaceshipMovingState::Update(ASpaceship* Spaceship)
@@ -30,5 +29,9 @@ void SpaceshipMovingState::Update(ASpaceship* Spaceship)
 
 void SpaceshipMovingState::Exit(ASpaceship* Spaceship)
 {
-    Spaceship->MovementComponent->Decelerate();
+}
+
+SpaceshipState::StateName SpaceshipMovingState::GetStateName()
+{
+    return SpaceshipState::StateName::Moving;
 }

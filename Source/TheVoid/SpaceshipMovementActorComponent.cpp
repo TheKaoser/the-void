@@ -3,6 +3,7 @@
 
 #include "SpaceshipMovementActorComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "SpaceshipMovingState.h"
 
 const float USpaceshipMovementActorComponent::Acceleration = 200.0f;
 const float USpaceshipMovementActorComponent::Deceleration = 50.0f;
@@ -26,6 +27,7 @@ void USpaceshipMovementActorComponent::BeginPlay()
 	Super::BeginPlay();
 
 	SpaceshipController = Cast<APlayerController>(Cast<APawn>(GetOwner())->GetController());
+	SpringArmComponent = GetOwner()->FindComponentByClass<USpringArmComponent>();
 }
 
 // Called every frame
@@ -33,23 +35,11 @@ void USpaceshipMovementActorComponent::TickComponent(float DeltaTime, ELevelTick
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	dynamic_cast
-
 	CurrentSpaceshipSpeed = std::clamp(CurrentSpaceshipSpeed + (IsAccelerating * Acceleration - Deceleration) * DeltaTime, 0.0f, MaxSpeed);
 	SpringArmComponent->TargetArmLength = BaseSpringArmLength + CurrentSpaceshipSpeed;
 	SpringArmComponent->bEnableCameraRotationLag = true;
 	GetOwner()->AddActorLocalOffset(FVector(0, CurrentSpaceshipSpeed, 0), true);
 	SetForceFeedbackEffect();
-}
-
-void USpaceshipMovementActorComponent::SetPlayerInputComponent(UInputComponent* SpaceshipInputComponent)
-{
-	this->PlayerInputComponent = SpaceshipInputComponent;
-}
-
-void USpaceshipMovementActorComponent::SetSpringArm(class USpringArmComponent* SpringArm)
-{
-	this->SpringArmComponent = SpringArm;
 }
 
 void USpaceshipMovementActorComponent::SetForceFeedbackEffect()
@@ -84,4 +74,9 @@ void USpaceshipMovementActorComponent::MoveX(float InputValue)
 	GetOwner()->AddActorLocalRotation(FRotator(InputValue * RotationSpeed * GetWorld()->DeltaTimeSeconds, 0, 0), true);
 	if (IsAccelerating)
 		GetOwner()->AddActorLocalRotation(FRotator(0, InputValue * RotationSpeed * GetWorld()->DeltaTimeSeconds, 0), true);
+}
+
+void USpaceshipMovementActorComponent::OnStateChange(SpaceshipState* NewState)
+{
+	IsAccelerating = NewState->GetStateName() == SpaceshipState::StateName::Moving;
 }

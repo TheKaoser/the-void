@@ -29,3 +29,8 @@ void SpaceshipIdleState::Update(ASpaceship* Spaceship)
 void SpaceshipIdleState::Exit(ASpaceship* Spaceship)
 {
 }
+
+SpaceshipState::StateName SpaceshipIdleState::GetStateName()
+{
+    return SpaceshipState::StateName::Idle;
+}
