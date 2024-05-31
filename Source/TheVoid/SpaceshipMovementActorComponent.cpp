@@ -7,7 +7,7 @@
 const float USpaceshipMovementActorComponent::Acceleration = 200.0f;
 const float USpaceshipMovementActorComponent::Deceleration = 50.0f;
 const float USpaceshipMovementActorComponent::MaxSpeed = 1000.0f;
-const float USpaceshipMovementActorComponent::RotationSpeed = 30.0f;
+const float USpaceshipMovementActorComponent::RotationSpeed = 50.0f;
 const float USpaceshipMovementActorComponent::ClimbSpeed = 50.0f;
 
 const float USpaceshipMovementActorComponent::BaseSpringArmLength = 3500.0f;
@@ -33,6 +33,8 @@ void USpaceshipMovementActorComponent::TickComponent(float DeltaTime, ELevelTick
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	dynamic_cast
+
 	CurrentSpaceshipSpeed = std::clamp(CurrentSpaceshipSpeed + (IsAccelerating * Acceleration - Deceleration) * DeltaTime, 0.0f, MaxSpeed);
 	SpringArmComponent->TargetArmLength = BaseSpringArmLength + CurrentSpaceshipSpeed;
 	SpringArmComponent->bEnableCameraRotationLag = true;
@@ -50,24 +52,24 @@ void USpaceshipMovementActorComponent::SetSpringArm(class USpringArmComponent* S
 	this->SpringArmComponent = SpringArm;
 }
 
-void USpaceshipMovementActorComponent::MoveForward()
-{
-	IsAccelerating = true;
-}
-
-void USpaceshipMovementActorComponent::StopMoveForward()
-{
-	IsAccelerating = false;
-}
-
 void USpaceshipMovementActorComponent::SetForceFeedbackEffect()
 {
 	FForceFeedbackParameters Params = FForceFeedbackParameters();
 
-	if (CurrentSpaceshipSpeed > 500)
+	if (CurrentSpaceshipSpeed > 500 and IsAccelerating)
 	{
 		SpaceshipController->ClientPlayForceFeedback(ForceFeedbackEffect, Params);
 	}
+}
+
+void USpaceshipMovementActorComponent::Accelerate()
+{
+	IsAccelerating = true;
+}
+
+void USpaceshipMovementActorComponent::Decelerate()
+{
+	IsAccelerating = false;
 }
 
 void USpaceshipMovementActorComponent::MoveY(float InputValue)

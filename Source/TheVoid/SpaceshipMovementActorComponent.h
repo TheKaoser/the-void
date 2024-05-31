@@ -29,13 +29,10 @@ public:
 	void SetSpringArm(class USpringArmComponent* SpringArm);
 
 	UFUNCTION()
-	void MoveForward();
-	
-	UFUNCTION()
-	void StopMoveForward();
-
-	UFUNCTION()
 	void SetForceFeedbackEffect();
+
+	void Accelerate();
+	void Decelerate();
 
 	UFUNCTION()
 	void MoveX(float InputValue);

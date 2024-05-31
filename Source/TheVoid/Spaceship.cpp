@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "SpaceshipMovementActorComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "SpaceshipIdleState.h"
 
 // Sets default values
 ASpaceship::ASpaceship()
@@ -34,6 +35,8 @@ void ASpaceship::BeginPlay()
 
 	MovementComponent->SetPlayerInputComponent(InputComponent);
 	MovementComponent->SetSpringArm(SpringArm);
+
+	CurrentState = new SpaceshipIdleState();
 }
 
 // Called every frame
@@ -47,8 +50,33 @@ void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAction("SpaceshipMoveForward", IE_Pressed, MovementComponent, &USpaceshipMovementActorComponent::MoveForward);
-	PlayerInputComponent->BindAction("SpaceshipMoveForward", IE_Released, MovementComponent, &USpaceshipMovementActorComponent::StopMoveForward);
+	PlayerInputComponent->BindAction("SpaceshipMoveForward", IE_Pressed, this, &ASpaceship::MoveForward);
+	PlayerInputComponent->BindAction("SpaceshipMoveForward", IE_Released, this, &ASpaceship::StopMoveForward);
 	PlayerInputComponent->BindAxis("SpaceshipMoveX", MovementComponent, &USpaceshipMovementActorComponent::MoveX);
 	PlayerInputComponent->BindAxis("SpaceshipMoveY", MovementComponent, &USpaceshipMovementActorComponent::MoveY);
+}
+
+void ASpaceship::MoveForward()
+{
+	SpaceshipInput Input = {SpaceshipInput::PressForward, 1.0f};
+	HandleInput(Input);
+}
+
+void ASpaceship::StopMoveForward()
+{
+	SpaceshipInput Input = {SpaceshipInput::ReleaseForward, 0.0f};
+	HandleInput(Input);
+}
+
+void ASpaceship::HandleInput(SpaceshipInput Input)
+{
+	SpaceshipState* SpaceshipState = CurrentState->HandleInput(this, Input);
+	if (SpaceshipState)
+	{
+		CurrentState->Exit(this);
+		delete CurrentState;
+		CurrentState = SpaceshipState;
+		CurrentState->Enter(this);
+		UE_LOG(LogTemp, Warning, TEXT("State changed"));
+	}
 }

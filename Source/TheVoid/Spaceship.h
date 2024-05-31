@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "SpaceshipInput.h"
 #include "Spaceship.generated.h"
 
 UCLASS()
@@ -26,16 +27,22 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-private:
 	UPROPERTY(VisibleAnywhere)
 	class USpaceshipMovementActorComponent* MovementComponent;
+private:
+	void MoveForward();
+	void StopMoveForward();
+	void MoveX(float InputValue);
+	void MoveY(float InputValue);
+	void HandleInput(SpaceshipInput Input);
 	
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* SpaceshipMesh;
 
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent* Camera;
-	
 	UPROPERTY(EditAnywhere)
 	class USpringArmComponent* SpringArm;
+
+	class SpaceshipState* CurrentState;
 };
