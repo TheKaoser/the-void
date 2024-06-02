@@ -1,15 +1,15 @@
 #include "SpaceshipState.h"
 
-class SpaceshipMovingState : public SpaceshipState
+class USpaceshipMovingState : public USpaceshipState
 {
-    public:
-    SpaceshipMovingState();
-    virtual ~SpaceshipMovingState();
+public:
+    USpaceshipMovingState();
+    virtual ~USpaceshipMovingState();
 
-    virtual SpaceshipState* HandleInput(class ASpaceship* Spaceship, SpaceshipInput Input) override;
+    virtual USpaceshipState* HandleInput(class ASpaceship* Spaceship, FSpaceshipInput Input) override;
     virtual void Enter(class ASpaceship* Spaceship) override;
     virtual void Update(class ASpaceship* Spaceship) override;
     virtual void Exit(class ASpaceship* Spaceship) override;
 
-    virtual StateName GetStateName() override;
+    virtual EStateName GetStateName() override;
 };

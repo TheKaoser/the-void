@@ -1,5 +1,7 @@
-class StateObserver
+#pragma once
+
+class UStateObserver
 {
 public:
-    virtual void OnStateChange(class SpaceshipState* NewState) = 0;
+    virtual void OnStateChange(class USpaceshipState* NewState) = 0;
 };

@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "SpaceshipMovementActorComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "SpaceshipInput.h"
 #include "SpaceshipIdleState.h"
 
 // Sets default values
@@ -24,6 +25,8 @@ ASpaceship::ASpaceship()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
+
+	StateNotifier = CreateDefaultSubobject<UStateNotifier>(TEXT("StateNotifier"));
 }
 
 // Called when the game starts or when spawned
@@ -32,8 +35,7 @@ void ASpaceship::BeginPlay()
 	Super::BeginPlay();
 
 	SetupPlayerInputComponent(InputComponent);
-	Observers[0] = MovementComponent;
-	CurrentState = new SpaceshipIdleState();
+	CurrentState = new USpaceshipIdleState();
 }
 
 // Called every frame
@@ -47,37 +49,33 @@ void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAction("SpaceshipMoveForward", IE_Pressed, this, &ASpaceship::MoveForward);
-	PlayerInputComponent->BindAction("SpaceshipMoveForward", IE_Released, this, &ASpaceship::StopMoveForward);
+	PlayerInputComponent->BindAction("SpaceshipMoveForward", IE_Pressed, this, &ASpaceship::PressForward);
+	PlayerInputComponent->BindAction("SpaceshipMoveForward", IE_Released, this, &ASpaceship::ReleaseForward);
 	PlayerInputComponent->BindAxis("SpaceshipMoveX", MovementComponent, &USpaceshipMovementActorComponent::MoveX);
 	PlayerInputComponent->BindAxis("SpaceshipMoveY", MovementComponent, &USpaceshipMovementActorComponent::MoveY);
 }
 
-void ASpaceship::MoveForward()
+void ASpaceship::PressForward()
 {
-	SpaceshipInput Input = {SpaceshipInput::PressForward, 1.0f};
+	FSpaceshipInput Input = {EInputType::PressForward, 1.0f};
 	HandleInput(Input);
 }
 
-void ASpaceship::StopMoveForward()
+void ASpaceship::ReleaseForward()
 {
-	SpaceshipInput Input = {SpaceshipInput::ReleaseForward, 0.0f};
+	FSpaceshipInput Input = {EInputType::ReleaseForward, 0.0f};
 	HandleInput(Input);
 }
 
-void ASpaceship::HandleInput(SpaceshipInput Input)
+void ASpaceship::HandleInput(FSpaceshipInput Input)
 {
-	SpaceshipState* SpaceshipState = CurrentState->HandleInput(this, Input);
+	USpaceshipState* SpaceshipState = CurrentState->HandleInput(this, Input);
 	if (SpaceshipState)
 	{
 		CurrentState->Exit(this);
 		delete CurrentState;
 		CurrentState = SpaceshipState;
 		CurrentState->Enter(this);
-		
-		for (int i = 0; i < NumObservers; i++)
-		{
-			Observers[i]->OnStateChange(CurrentState);
-		}
+		StateNotifier->NotifyObservers(CurrentState);
 	}
 }

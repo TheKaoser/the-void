@@ -1,37 +1,38 @@
 #include "SpaceshipMovingState.h"
 #include "SpaceshipMovementActorComponent.h"
 #include "SpaceshipIdleState.h"
+#include "SpaceshipInput.h"
 
-SpaceshipMovingState::SpaceshipMovingState()
+USpaceshipMovingState::USpaceshipMovingState()
 {
 }
 
-SpaceshipMovingState::~SpaceshipMovingState()
+USpaceshipMovingState::~USpaceshipMovingState()
 {
 }
 
-SpaceshipState* SpaceshipMovingState::HandleInput(ASpaceship* Spaceship, SpaceshipInput Input)
+USpaceshipState* USpaceshipMovingState::HandleInput(ASpaceship* Spaceship, FSpaceshipInput Input)
 {
-    if (Input.InputType == SpaceshipInput::InputType::ReleaseForward)
+    if (Input.InputType == ReleaseForward)
     {
-        return new SpaceshipIdleState();
+        return new USpaceshipIdleState();
     }
     return nullptr;
 }
 
-void SpaceshipMovingState::Enter(ASpaceship* Spaceship)
+void USpaceshipMovingState::Enter(ASpaceship* Spaceship)
 {
 }
 
-void SpaceshipMovingState::Update(ASpaceship* Spaceship)
+void USpaceshipMovingState::Update(ASpaceship* Spaceship)
 {
 }
 
-void SpaceshipMovingState::Exit(ASpaceship* Spaceship)
+void USpaceshipMovingState::Exit(ASpaceship* Spaceship)
 {
 }
 
-SpaceshipState::StateName SpaceshipMovingState::GetStateName()
+EStateName USpaceshipMovingState::GetStateName()
 {
-    return SpaceshipState::StateName::Moving;
+    return Moving;
 }

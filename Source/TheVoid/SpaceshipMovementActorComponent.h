@@ -8,7 +8,7 @@
 #include "SpaceshipMovementActorComponent.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class THEVOID_API USpaceshipMovementActorComponent : public UActorComponent, public StateObserver
+class THEVOID_API USpaceshipMovementActorComponent : public UActorComponent, public UStateObserver
 {
 	GENERATED_BODY()
 
@@ -36,7 +36,7 @@ public:
 	UFUNCTION()
 	void MoveY(float InputValue);
 
-	void OnStateChange(SpaceshipState* NewState) override;
+	void OnStateChange(class USpaceshipState* NewState);
 
 private:
 	bool IsAccelerating = false;

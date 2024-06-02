@@ -1,18 +1,19 @@
-#ifndef SPACESHIPINPUT_H
-#define SPACESHIPINPUT_H
+#include "SpaceshipInput.generated.h"
 
-struct SpaceshipInput
+UENUM()
+enum EInputType
 {
-    enum InputType
-    {
-        PressForward,
-        ReleaseForward,
-        PressX,
-        PressY
-    };
-    
-    InputType InputType;
-    float Intensity;
+    PressForward,
+    ReleaseForward,
+    PressX,
+    PressY
 };
 
-#endif // SPACESHIPINPUT_H
+USTRUCT()
+struct FSpaceshipInput
+{
+    GENERATED_BODY()
+
+    EInputType InputType;
+    float Intensity;
+};

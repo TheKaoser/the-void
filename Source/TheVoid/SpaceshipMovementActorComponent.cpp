@@ -4,6 +4,7 @@
 #include "SpaceshipMovementActorComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "SpaceshipMovingState.h"
+#include "Spaceship.h"
 
 const float USpaceshipMovementActorComponent::Acceleration = 200.0f;
 const float USpaceshipMovementActorComponent::Deceleration = 50.0f;
@@ -28,6 +29,7 @@ void USpaceshipMovementActorComponent::BeginPlay()
 
 	SpaceshipController = Cast<APlayerController>(Cast<APawn>(GetOwner())->GetController());
 	SpringArmComponent = GetOwner()->FindComponentByClass<USpringArmComponent>();
+	Cast<ASpaceship>(GetOwner())->AddObserver(this);
 }
 
 // Called every frame
@@ -76,7 +78,7 @@ void USpaceshipMovementActorComponent::MoveX(float InputValue)
 		GetOwner()->AddActorLocalRotation(FRotator(0, InputValue * RotationSpeed * GetWorld()->DeltaTimeSeconds, 0), true);
 }
 
-void USpaceshipMovementActorComponent::OnStateChange(SpaceshipState* NewState)
+void USpaceshipMovementActorComponent::OnStateChange(USpaceshipState* NewState)
 {
-	IsAccelerating = NewState->GetStateName() == SpaceshipState::StateName::Moving;
+	IsAccelerating = NewState->GetStateName() == Moving;
 }

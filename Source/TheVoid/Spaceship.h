@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "SpaceshipInput.h"
+#include "StateNotifier.h"
 #include "Spaceship.generated.h"
 
 UCLASS()
@@ -13,26 +13,27 @@ class THEVOID_API ASpaceship : public APawn
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
 	ASpaceship();
+	
+	void AddObserver(UStateObserver* Observer)
+    {
+        StateNotifier->AddObserver(Observer);
+    }
 
-protected:
-	// Called when the game starts or when spawned
+    void RemoveObserver(UStateObserver* Observer)
+    {
+        StateNotifier->RemoveObserver(Observer);
+    }
+
+protected:	
 	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(VisibleAnywhere)
-	class USpaceshipMovementActorComponent* MovementComponent;
 private:
-	void MoveForward();
-	void StopMoveForward();
-	void HandleInput(SpaceshipInput Input);
+	void PressForward();
+	void ReleaseForward();
+	void HandleInput(struct FSpaceshipInput Input);
 	
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* SpaceshipMesh;
@@ -42,8 +43,11 @@ private:
 	UPROPERTY(EditAnywhere)
 	class USpringArmComponent* SpringArm;
 
-	class SpaceshipState* CurrentState;
+	class USpaceshipState* CurrentState;
 
-	static const int NumObservers = 1;
-	class StateObserver* Observers[NumObservers];
+	UPROPERTY()
+	UStateNotifier* StateNotifier;
+
+	UPROPERTY(VisibleAnywhere)
+	class USpaceshipMovementActorComponent* MovementComponent;
 };
