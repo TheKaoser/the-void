@@ -3,6 +3,10 @@
 #include "SpaceshipIdleState.h"
 #include "SpaceshipInput.h"
 
+USpaceshipMovingState::USpaceshipMovingState()
+{
+}
+
 USpaceshipState* USpaceshipMovingState::HandleInput(ASpaceship* Spaceship, FSpaceshipInput Input)
 {
     if (Input.InputType == ReleaseForward)

@@ -16,6 +16,5 @@ public:
     virtual void Enter(class ASpaceship* Spaceship) = 0;
     virtual void Update(class ASpaceship* Spaceship) = 0;
     virtual void Exit(class ASpaceship* Spaceship) = 0;
-
     virtual EStateName GetStateName() = 0;
 };
