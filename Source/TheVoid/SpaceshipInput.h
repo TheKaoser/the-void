@@ -5,8 +5,7 @@ enum EInputType
 {
     PressForward,
     ReleaseForward,
-    PressX,
-    PressY
+    PressFire
 };
 
 USTRUCT()

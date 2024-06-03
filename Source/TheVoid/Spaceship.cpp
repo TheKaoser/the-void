@@ -53,6 +53,7 @@ void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 	PlayerInputComponent->BindAction("SpaceshipMoveForward", IE_Released, this, &ASpaceship::ReleaseForward);
 	PlayerInputComponent->BindAxis("SpaceshipMoveX", MovementComponent, &USpaceshipMovementActorComponent::MoveX);
 	PlayerInputComponent->BindAxis("SpaceshipMoveY", MovementComponent, &USpaceshipMovementActorComponent::MoveY);
+	PlayerInputComponent->BindAction("SpaceshipFire", IE_Pressed, this, &ASpaceship::PressFire);
 }
 
 void ASpaceship::PressForward()
@@ -63,6 +64,11 @@ void ASpaceship::PressForward()
 void ASpaceship::ReleaseForward()
 {
 	HandleInput({EInputType::ReleaseForward, 0.0f});
+}
+
+void ASpaceship::PressFire()
+{
+	HandleInput({EInputType::PressFire, 0.0f});
 }
 
 void ASpaceship::HandleInput(FSpaceshipInput Input)

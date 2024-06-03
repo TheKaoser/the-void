@@ -23,6 +23,7 @@ protected:
 private:
 	void PressForward();
 	void ReleaseForward();
+	void PressFire();
 	void HandleInput(struct FSpaceshipInput Input);
 	
 	UPROPERTY(EditAnywhere)
