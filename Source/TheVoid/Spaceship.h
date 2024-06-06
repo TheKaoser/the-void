@@ -25,7 +25,7 @@ private:
 	void ReleaseForward();
 	void PressFire();
 	void ReleaseFire();
-	void HandleInput(class USpaceshipState* CurrentState, struct FSpaceshipInput Input);
+	class USpaceshipState* HandleInput(class USpaceshipState* CurrentState, struct FSpaceshipInput Input);
 	
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* SpaceshipMesh;

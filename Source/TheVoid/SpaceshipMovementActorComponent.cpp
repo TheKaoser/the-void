@@ -59,5 +59,6 @@ void USpaceshipMovementActorComponent::MoveX(float InputValue)
 
 void USpaceshipMovementActorComponent::OnStateChange(USpaceshipState* NewState)
 {
-	IsAccelerating = NewState->GetStateName() == Moving;
+	if (NewState->GetStateName() != Firing)
+		IsAccelerating = NewState->GetStateName() == Moving;
 }

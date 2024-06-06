@@ -63,32 +63,33 @@ void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 void ASpaceship::PressForward()
 {
-	HandleInput(CurrentMovementState, {EInputType::PressForward, 1.0f});
+	CurrentMovementState = HandleInput(CurrentMovementState, {EInputType::PressForward, 1.0f});
 }
 
 void ASpaceship::ReleaseForward()
 {
-	HandleInput(CurrentMovementState, {EInputType::ReleaseForward, 0.0f});
+	CurrentMovementState = HandleInput(CurrentMovementState, {EInputType::ReleaseForward, 0.0f});
 }
 
 void ASpaceship::PressFire()
 {
-	HandleInput(CurrentActionState, {EInputType::PressFire, 1.0f});
+	CurrentActionState = HandleInput(CurrentActionState, {EInputType::PressFire, 1.0f});
 }
 
 void ASpaceship::ReleaseFire()
 {
-	HandleInput(CurrentActionState, {EInputType::ReleaseFire, 0.0f});
+	CurrentActionState = HandleInput(CurrentActionState, {EInputType::ReleaseFire, 0.0f});
 }
 
-void ASpaceship::HandleInput(USpaceshipState* CurrentState, FSpaceshipInput Input)
+USpaceshipState* ASpaceship::HandleInput(USpaceshipState* CurrentState, FSpaceshipInput Input)
 {
-	if (USpaceshipState* SpaceshipState = CurrentState->HandleInput(this, Input))
+	if (USpaceshipState* NewState = CurrentState->HandleInput(this, Input))
 	{
 		CurrentState->Exit(this);
-		delete CurrentState;
-		CurrentState = SpaceshipState;
-		CurrentState->Enter(this);
-		StateNotifier->NotifyObservers(CurrentState);
+		NewState->Enter(this);
+		StateNotifier->NotifyObservers(NewState);
+		delete CurrentState;	
+		return NewState;
 	}
+	return CurrentState;
 }
