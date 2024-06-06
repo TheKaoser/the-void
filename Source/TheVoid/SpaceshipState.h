@@ -4,7 +4,8 @@ UENUM()
 enum EStateName
 {
     Idle,
-    Moving
+    Moving,
+    Firing
 };
 
 class USpaceshipState
