@@ -37,12 +37,14 @@ void ASpaceship::BeginPlay()
 	Super::BeginPlay();
 
 	SetupPlayerInputComponent(InputComponent);
-	CurrentState = new USpaceshipIdleState();
+	CurrentMovementState = new USpaceshipIdleState();
+	CurrentActionState = new USpaceshipIdleState();
 }
 
 void ASpaceship::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	UE_LOG(LogTemp, Warning, TEXT("Current state: %d"), CurrentActionState->GetStateName());
 }
 
 void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -51,30 +53,37 @@ void ASpaceship::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 	PlayerInputComponent->BindAction("SpaceshipMoveForward", IE_Pressed, this, &ASpaceship::PressForward);
 	PlayerInputComponent->BindAction("SpaceshipMoveForward", IE_Released, this, &ASpaceship::ReleaseForward);
+
 	PlayerInputComponent->BindAxis("SpaceshipMoveX", MovementComponent, &USpaceshipMovementActorComponent::MoveX);
 	PlayerInputComponent->BindAxis("SpaceshipMoveY", MovementComponent, &USpaceshipMovementActorComponent::MoveY);
+	
 	PlayerInputComponent->BindAction("SpaceshipFire", IE_Pressed, this, &ASpaceship::PressFire);
+	PlayerInputComponent->BindAction("SpaceshipFire", IE_Released, this, &ASpaceship::ReleaseFire);
 }
 
 void ASpaceship::PressForward()
 {
-	HandleInput({EInputType::PressForward, 1.0f});
+	HandleInput(CurrentMovementState, {EInputType::PressForward, 1.0f});
 }
 
 void ASpaceship::ReleaseForward()
 {
-	HandleInput({EInputType::ReleaseForward, 0.0f});
+	HandleInput(CurrentMovementState, {EInputType::ReleaseForward, 0.0f});
 }
 
 void ASpaceship::PressFire()
 {
-	HandleInput({EInputType::PressFire, 0.0f});
+	HandleInput(CurrentActionState, {EInputType::PressFire, 1.0f});
 }
 
-void ASpaceship::HandleInput(FSpaceshipInput Input)
+void ASpaceship::ReleaseFire()
 {
-	USpaceshipState* SpaceshipState = CurrentState->HandleInput(this, Input);
-	if (SpaceshipState)
+	HandleInput(CurrentActionState, {EInputType::ReleaseFire, 0.0f});
+}
+
+void ASpaceship::HandleInput(USpaceshipState* CurrentState, FSpaceshipInput Input)
+{
+	if (USpaceshipState* SpaceshipState = CurrentState->HandleInput(this, Input))
 	{
 		CurrentState->Exit(this);
 		delete CurrentState;

@@ -1,5 +1,6 @@
-#include "SpaceshipIdleState.h"
 #include "SpaceshipInput.h"
+#include "SpaceshipIdleState.h"
+#include "SpaceshipFiringState.h"
 
 USpaceshipFiringState::USpaceshipFiringState()
 {
@@ -7,7 +8,7 @@ USpaceshipFiringState::USpaceshipFiringState()
 
 USpaceshipState* USpaceshipFiringState::HandleInput(ASpaceship* Spaceship, FSpaceshipInput Input)
 {
-    if (Input.InputType == ReleaseForward)
+    if (Input.InputType == ReleaseFire)
     {
         return new USpaceshipIdleState();
     }

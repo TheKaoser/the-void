@@ -24,7 +24,8 @@ private:
 	void PressForward();
 	void ReleaseForward();
 	void PressFire();
-	void HandleInput(struct FSpaceshipInput Input);
+	void ReleaseFire();
+	void HandleInput(class USpaceshipState* CurrentState, struct FSpaceshipInput Input);
 	
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* SpaceshipMesh;
@@ -38,7 +39,8 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	class USpaceshipMovementActorComponent* MovementComponent;
 
-	class USpaceshipState* CurrentState;
+	class USpaceshipState* CurrentMovementState;
+	class USpaceshipState* CurrentActionState;
 	
 	UPROPERTY()
 	class UStateNotifier* StateNotifier;
