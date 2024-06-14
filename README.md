@@ -1,0 +1,1 @@
+This project, developed with Unreal Engine 5, aims to create a spaceship game using best practices. The main spaceship utilizes the state pattern, with polymorphic states that are instantiated and destroyed when a new one is set. Its components use the state through the observer pattern, aiming to minimize coupling between classes. I will continue to update the description.
